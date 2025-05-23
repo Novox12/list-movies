@@ -1,0 +1,49 @@
+
+.card {
+	position: relative;
+	color: #fff;
+	overflow: hidden;
+	max-width: 200px;
+	width: 100%;
+	cursor: pointer;
+	transition: all .2s ease-in-out;
+}
+
+.card:hover{
+	transition: all .2s ease-in-out;
+	transform: scale(1.1);
+}
+
+.btnDelete{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	border-radius: 50%;
+	width: 25px;
+	height: 25px;
+	background-color: #ffffff92;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: all .2s ease-in-out;
+}
+
+.btnDelete:hover{
+	transition: all .2s ease-in-out;
+	transform: scale(1.2);
+	
+}
+
+.card img{
+	aspect-ratio: 2 / 3;
+	border-radius: 10px;
+	width: 100%;
+}
+
+.card h3{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis; 
+}
+
+
