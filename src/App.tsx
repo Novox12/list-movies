@@ -8,6 +8,7 @@ import { resetData } from './utils/resetData';
 import Modal from 'react-modal';
 import Cropper, { type Area } from 'react-easy-crop';
 import { getCroppedImg } from './utils/cropImage';
+import { HiOutlineFilter } from 'react-icons/hi';
 
 Modal.setAppElement('#root');
 
@@ -25,11 +26,14 @@ function App() {
     const [zoom, setZoom] = useState(1);
     const [isEditing, setIsEditing] = useState(false);
     const [editIndex, setEditIndex] = useState<number | null>(null);
+    const [sortMode, setSortMode] = useState<'none' | 'asc' | 'desc'>('none');
+    const [originalMovies, setOriginalMovies] = useState<Movie[]>([]);
 
 
     useEffect(() => {
         const allMovies = loadMovies();
         setMovies(allMovies);
+        setOriginalMovies(allMovies);
         setFilteredMovies(allMovies);
     }, [triger]);
 
@@ -103,7 +107,7 @@ function App() {
     };
 
     const handleSaveMovie = async () => {
-        if (!title || !date) return;
+        if (!title || !date ||!image) return;
 
         let finalImage = image;
 
@@ -136,6 +140,25 @@ function App() {
         setImage(null);
         setEditIndex(null);
         setIsEditing(false);
+    };
+
+    const handleOrder = () => {
+        let nextMode: typeof sortMode;
+        let sorted: Movie[];
+
+        if (sortMode === 'none') {
+            sorted = [...filteredMovies].sort((a, b) => a.date.localeCompare(b.date));
+            nextMode = 'asc';
+        } else if (sortMode === 'asc') {
+            sorted = [...filteredMovies].sort((a, b) => b.date.localeCompare(a.date));
+            nextMode = 'desc';
+        } else {
+            sorted = [...originalMovies];
+            nextMode = 'none';
+        }
+
+        setFilteredMovies(sorted);
+        setSortMode(nextMode);
     };
 
     const handleSaveMovieCancel = () => {
@@ -193,8 +216,11 @@ function App() {
             <main className={styled.containerMain}>
 
                 {movies.length ? (
-                    <div style={{ paddingTop: `${filteredMovies.length ? '' : '100px'}` }}>
+                    <div className={styled.contendSearch} style={{ paddingTop: `${filteredMovies.length ? '' : '100px'}` }}>
                         <Search onSearch={handleSearch} />
+                        <div onClick={handleOrder} className={styled.filterBtn}>
+                            <HiOutlineFilter color='#fff' size={20} />
+                        </div>
                     </div>
                 ) : null}
                 {filteredMovies.length ? (
@@ -229,7 +255,12 @@ function App() {
                     <input
                         type="text"
                         value={date}
-                        onChange={(e) => setDate(e.target.value)}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (/^\d*$/.test(value)) {
+                                setDate(value);
+                            }
+                        }}
                         placeholder="Date"
                     />
                     <input
