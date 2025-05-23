@@ -14,8 +14,8 @@ Este proyecto está desarrollado con [React.js](https://reactjs.org/), utilizand
 1. Clona este repositorio:
 
    ```bash
-   git clone https://github.com/tu-usuario/tu-proyecto.git
-   cd tu-proyecto
+   git clone git@github.com:Novox12/list-movies.git
+   cd list-movies
    ```
 
 2. Instala TypeScript y ts-node de manera global o dentro del proyecto:
